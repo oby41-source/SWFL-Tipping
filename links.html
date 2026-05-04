@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWFL Tipping — Tipster Links</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Barlow',sans-serif;background:#08131f;color:#f0f4f8;min-height:100vh;padding:32px 20px;}
+h1{font-family:'Anton',sans-serif;font-size:36px;letter-spacing:2px;background:linear-gradient(135deg,#fff 20%,#f5c400 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#6a8099;margin-bottom:8px;}
+.url-input{display:flex;gap:10px;margin-bottom:32px;align-items:center;flex-wrap:wrap;}
+.url-input label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#6a8099;white-space:nowrap;}
+.url-input input{flex:1;min-width:280px;background:#142840;border:1px solid #233a54;color:#fff;font-family:'Barlow',monospace;font-size:14px;padding:10px 14px;border-radius:8px;outline:none;}
+.url-input input:focus{border-color:#f5c400;}
+.url-input button{padding:10px 20px;background:#f5c400;color:#08131f;border:none;border-radius:8px;font-family:'Anton',sans-serif;font-size:15px;letter-spacing:1px;cursor:pointer;}
+.grid{display:grid;gap:12px;}
+.link-row{background:#0d1e2f;border:1px solid #1a2d45;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.tipster-name{font-family:'Anton',sans-serif;font-size:20px;min-width:160px;}
+.org-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:rgba(245,196,0,.1);color:#f5c400;padding:2px 8px;border-radius:3px;}
+.link-url{font-family:'Barlow',monospace;font-size:13px;color:#5ab4e0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.copy-btn{padding:8px 16px;background:#142840;border:1px solid #233a54;color:#f5c400;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.copy-btn:hover{background:#233a54;}
+.copy-btn.copied{background:rgba(0,212,106,.15);border-color:rgba(0,212,106,.4);color:#00d46a;}
+.wa-btn{padding:8px 16px;background:#25d366;border:none;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;color:#fff;white-space:nowrap;text-decoration:none;display:inline-block;flex-shrink:0;}
+.admin-row{border-color:#f5c400;}
+.admin-row .tipster-name{color:#f5c400;}
+.hint{font-size:13px;color:#6a8099;margin-bottom:20px;line-height:1.6;}
+.hint strong{color:#f0f4f8;}
+@media print{
+  body{background:#fff;color:#000;padding:16px;}
+  .url-input,.copy-btn,.wa-btn{display:none;}
+  .link-row{border-color:#ddd;background:#f9f9f9;}
+  .tipster-name{color:#000;}
+  .link-url{color:#0066cc;}
+  h1{-webkit-text-fill-color:#000;background:none;}
+}
+</style>
+</head>
+<body>
+
+<h1>SWFL TIPPING LINKS</h1>
+<p class="sub">2026 Season — Personal Tipster Links</p>
+
+<div class="url-input">
+  <label>Your site URL:</label>
+  <input type="text" id="base-url" placeholder="https://swfl-tipping.pages.dev" oninput="renderLinks()">
+  <button onclick="renderLinks()">Update</button>
+</div>
+
+<p class="hint">
+  <strong>Send each person ONLY their own link.</strong> Opening the link logs them straight into their tips — no password needed.<br>
+  The link is their identity, so keep them private. If someone shares their link accidentally, you can change their token in the app.
+</p>
+
+<div class="grid" id="links-grid"></div>
+
+<script>
+const TIPSTERS = [
+  { name:'Jarred',         org:'SEN',         token:'8ec75e07' },
+  { name:'Craney',         org:'SEN',         token:'1a093ef5' },
+  { name:'Macca',          org:'SEN',         token:'30f22176' },
+  { name:'Weaver',         org:'SEN',         token:'145aeb40' },
+  { name:'Charlie',        org:'SEN',         token:'44c4a413' },
+  { name:'Antony',         org:'MGIB',        token:'8c2d8aa1' },
+  { name:'Blair',          org:'Buckinghams', token:'e56a7873' },
+  { name:'Conor',          org:'Ford',        token:'38bfd1d8' },
+  { name:'Dean',           org:'Lomax',       token:'66298c98' },
+  { name:'Ritchie',        org:'Hollow',      token:'a4a20aaa' },
+  { name:'Jaysen',         org:'Mayor',       token:'c75f088b' },
+  { name:'Mystery Tipper', org:'',            token:'e07d088b' },
+];
+
+const ADMIN_PIN = '0000';
+
+function renderLinks() {
+  const base = document.getElementById('base-url').value.trim().replace(/\/$/, '') || 'https://swfl-tipping.pages.dev';
+  const grid = document.getElementById('links-grid');
+
+  const rows = TIPSTERS.map(t => {
+    const url = `${base}?t=${t.token}`;
+    const waMsg = encodeURIComponent(`Hey ${t.name}! Here's your personal SWFL tipping link for 2026 — tap it to submit your tips each week 🏉\n\n${url}`);
+    return `
+    <div class="link-row">
+      <div class="tipster-name">${t.name}</div>
+      ${t.org ? `<span class="org-tag">${t.org}</span>` : ''}
+      <div class="link-url" title="${url}">${url}</div>
+      <button class="copy-btn" onclick="copyLink(this, '${url}')">Copy</button>
+      <a class="wa-btn" href="https://wa.me/?text=${waMsg}" target="_blank">📲 WhatsApp</a>
+    </div>`;
+  }).join('');
+
+  // Admin link
+  const adminRow = `
+    <div class="link-row admin-row" style="margin-top:8px;">
+      <div class="tipster-name">⚙️ Admin</div>
+      <div class="link-url">Open the site → tap "Admin Login" at bottom → PIN: ${ADMIN_PIN}</div>
+    </div>`;
+
+  grid.innerHTML = rows + adminRow;
+}
+
+function copyLink(btn, url) {
+  navigator.clipboard.writeText(url).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Pre-fill from current page domain if opened from the same site
+const currentBase = window.location.origin + window.location.pathname.replace('links.html','');
+if (currentBase.includes('pages.dev') || currentBase.includes('cloudflare')) {
+  document.getElementById('base-url').value = currentBase.replace(/\/$/, '');
+}
+renderLinks();
+</script>
+</body>
+</html>

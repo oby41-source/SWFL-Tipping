@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWFL Tipping 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#08131f;--navy2:#0d1e30;--navy3:#142840;--gold:#f5c400;--gold2:#c89d00;--white:#f0f4f8;--grey:#6a8099;--grey2:#1a2d45;--grey3:#233a54;--green:#00d46a;--red:#ff4545;--card:#0d1e2f;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 100% 60% at 50% -5%,rgba(245,196,0,.10) 0%,transparent 55%),radial-gradient(ellipse 50% 50% at 100% 100%,rgba(8,40,80,.6) 0%,transparent 60%),linear-gradient(175deg,#08131f 0%,#050e18 100%);}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:48px 48px;}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--navy);}
+#login-screen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 40%,rgba(245,196,0,.08) 0%,transparent 60%);}
+.login-box{position:relative;z-index:1;width:100%;max-width:420px;padding:20px;text-align:center;}
+.login-logo{font-family:'Anton',sans-serif;font-size:58px;letter-spacing:2px;line-height:1;background:linear-gradient(135deg,#fff 20%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.login-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--grey);margin-bottom:36px;}
+.login-prompt{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-bottom:14px;}
+.tipster-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px;}
+.tipster-btn{background:var(--navy3);border:1px solid var(--grey3);color:var(--white);border-radius:10px;padding:12px 10px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .18s;text-align:center;}
+.tipster-btn:hover{border-color:var(--gold);background:var(--grey2);}
+.tipster-btn.selected{border-color:var(--gold);background:rgba(245,196,0,.12);color:var(--gold);}
+.tipster-org{display:block;font-size:10px;color:var(--grey);font-weight:400;letter-spacing:1px;margin-top:2px;}
+.pin-section{display:none;}.pin-section.visible{display:block;}
+.pin-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-bottom:10px;}
+.pin-display{display:flex;justify-content:center;gap:12px;margin-bottom:16px;}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--grey3);background:transparent;transition:all .15s;}
+.pin-dot.filled{background:var(--gold);border-color:var(--gold);}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:240px;margin:0 auto 16px;}
+.num-btn{background:var(--navy3);border:1px solid var(--grey3);color:var(--white);border-radius:10px;padding:14px;font-family:'Anton',sans-serif;font-size:22px;cursor:pointer;transition:all .15s;}
+.num-btn:hover{background:var(--grey2);border-color:var(--gold);}
+.num-btn:active{transform:scale(.95);}
+.pin-error{color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;min-height:20px;margin-bottom:8px;}
+.admin-lnk{margin-top:16px;font-size:12px;color:var(--grey);cursor:pointer;text-decoration:underline;letter-spacing:1px;display:block;}
+
+/* Setup banner */
+#setup-banner{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(8,19,31,.97);}
+.setup-box{max-width:560px;width:100%;padding:32px;background:var(--card);border:1px solid var(--gold);border-radius:16px;text-align:center;}
+.setup-box h2{font-family:'Anton',sans-serif;font-size:32px;color:var(--gold);letter-spacing:2px;margin-bottom:12px;}
+.setup-box p{color:var(--grey);font-size:14px;line-height:1.7;margin-bottom:20px;}
+.setup-box input{width:100%;background:var(--navy3);border:1px solid var(--grey3);color:var(--white);font-family:'Barlow',monospace;font-size:13px;padding:10px 14px;border-radius:8px;outline:none;margin-bottom:10px;}
+.setup-box input:focus{border-color:var(--gold);}
+.setup-box label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);margin-bottom:6px;text-align:left;}
+.setup-save{width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Anton',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;margin-top:8px;}
+
+/* MAIN APP */
+#app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 16px 80px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(245,196,0,.12);margin-bottom:28px;}
+.topbar-logo{font-family:'Anton',sans-serif;font-size:28px;letter-spacing:1px;background:linear-gradient(135deg,#fff 20%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.user-chip{display:flex;align-items:center;gap:8px;background:var(--navy3);border:1px solid var(--grey3);border-radius:30px;padding:8px 16px;}
+.user-chip .name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;}
+.logout-btn{background:none;border:none;color:var(--grey);cursor:pointer;font-size:12px;text-decoration:underline;padding:0;}
+.tabs{display:flex;gap:4px;background:var(--navy3);border-radius:10px;padding:4px;margin-bottom:32px;max-width:640px;}
+.tab{flex:1;padding:10px 12px;border:none;background:transparent;color:var(--grey);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:7px;transition:all .18s;}
+.tab.active{background:var(--gold);color:var(--navy);}
+.view{display:none;}.view.active{display:block;}
+.round-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;}
+.round-bar h2{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.round-sel{display:flex;align-items:center;gap:8px;}
+.round-sel select{background:var(--navy3);border:1px solid var(--grey3);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;padding:8px 14px;border-radius:7px;cursor:pointer;outline:none;}
+
+/* LEADERBOARD */
+.lb{display:grid;gap:8px;}
+.lb-row{display:grid;grid-template-columns:52px 1fr 68px 68px;align-items:center;gap:12px;background:var(--card);border:1px solid rgba(255,255,255,.055);border-radius:12px;padding:14px 20px;position:relative;overflow:hidden;transition:transform .15s,border-color .15s;animation:fadeUp .35s ease both;}
+.lb-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--grey3);}
+.lb-row.p1::before{background:var(--gold);}.lb-row.p2::before{background:#b8bec6;}.lb-row.p3::before{background:#c07c3a;}
+.lb-row:hover{transform:translateX(3px);border-color:rgba(245,196,0,.2);}
+.lb-rank{font-family:'Anton',sans-serif;font-size:28px;color:var(--grey);text-align:center;}
+.p1 .lb-rank{color:var(--gold);}.p2 .lb-rank{color:#b8bec6;}.p3 .lb-rank{color:#c07c3a;}
+.lb-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;}
+.lb-tag{display:inline-block;background:rgba(245,196,0,.1);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-left:6px;}
+.lb-col{text-align:center;}
+.lb-col .lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);}
+.lb-col .val{font-family:'Anton',sans-serif;font-size:24px;line-height:1.1;}
+.lb-col.total .val{color:var(--gold);}
+
+/* GAMES */
+.games{display:grid;gap:14px;}
+.game-card{background:var(--card);border:1px solid rgba(255,255,255,.055);border-radius:14px;overflow:hidden;}
+.game-hdr{display:flex;justify-content:space-between;align-items:center;padding:9px 18px;background:var(--navy3);font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);}
+.result-badge{color:var(--green);font-weight:700;}
+.matchup{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:16px 20px;}
+.team-side{display:flex;align-items:center;gap:12px;}
+.team-side.right{flex-direction:row-reverse;text-align:right;}
+.team-logo-wrap{width:52px;height:52px;border-radius:50%;background:var(--navy3);border:1px solid var(--grey3);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Anton',sans-serif;font-size:12px;color:var(--gold);}
+.team-logo-wrap img{width:100%;height:100%;object-fit:contain;padding:4px;}
+.team-label{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;}
+.team-label small{display:block;font-size:11px;color:var(--grey);}
+.vs-badge{font-family:'Anton',sans-serif;font-size:13px;color:var(--grey);background:var(--grey3);padding:5px 12px;border-radius:5px;}
+.picks-row{display:flex;flex-wrap:wrap;gap:6px;padding:10px 18px 14px;border-top:1px solid rgba(255,255,255,.05);}
+.pick-chip{display:flex;align-items:center;gap:4px;background:var(--navy3);border:1px solid var(--grey3);border-radius:20px;padding:4px 10px 4px 8px;}
+.pick-chip.correct{background:rgba(0,212,106,.12);border-color:rgba(0,212,106,.35);}
+.pick-chip.wrong{background:rgba(255,69,69,.09);border-color:rgba(255,69,69,.25);}
+.pick-chip .pname{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;}
+.pick-chip .pteam{font-size:11px;color:var(--grey);margin-left:2px;}
+.pick-chip.correct .pteam{color:var(--green);}.pick-chip.wrong .pteam{color:var(--red);}
+
+/* SUBMIT */
+.submit-wrap{max-width:640px;margin:0 auto;}
+.form-card{background:var(--card);border:1px solid rgba(255,255,255,.055);border-radius:16px;padding:28px;margin-bottom:20px;}
+.form-card h3{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--grey3);}
+.fgroup{margin-bottom:16px;}
+.fgroup label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);margin-bottom:7px;}
+.fgroup select,.fgroup input{width:100%;background:var(--navy3);border:1px solid var(--grey3);color:var(--white);font-family:'Barlow',sans-serif;font-size:15px;padding:11px 14px;border-radius:8px;outline:none;transition:border-color .18s;}
+.fgroup select:focus,.fgroup input:focus{border-color:var(--gold);}
+.fgroup select option{background:var(--navy2);}
+.gm-pick{background:var(--navy3);border:1px solid var(--grey3);border-radius:11px;padding:13px 14px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;transition:border-color .18s;}
+.gm-pick.locked{border-color:rgba(245,196,0,.5);}
+.pick-t{border:2px solid var(--grey3);background:transparent;color:var(--grey);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;padding:9px 12px;border-radius:7px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .15s;width:100%;}
+.pick-t.home-btn{justify-content:flex-start;}.pick-t.away-btn{justify-content:flex-end;}
+.pick-t:hover{border-color:var(--gold);color:var(--white);}
+.pick-t.selected{background:var(--gold);border-color:var(--gold);color:var(--navy);font-weight:900;}
+.pick-t .tm-logo{width:28px;height:28px;border-radius:50%;background:var(--grey3);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
+.pick-t .tm-logo img{width:100%;height:100%;object-fit:contain;}
+.pick-vs-lbl{font-family:'Anton',sans-serif;font-size:11px;color:var(--grey);text-align:center;}
+.already-submitted{background:rgba(0,212,106,.12);border:1px solid rgba(0,212,106,.35);border-radius:10px;padding:14px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:16px;}
+.submit-cta{width:100%;padding:16px;background:var(--gold);color:var(--navy);border:none;border-radius:10px;font-family:'Anton',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;transition:all .18s;text-transform:uppercase;}
+.submit-cta:hover{background:var(--gold2);transform:translateY(-2px);}
+.submit-cta:disabled{opacity:.5;transform:none;cursor:not-allowed;}
+
+/* ADMIN */
+.admin-toggle-lnk{text-align:center;font-size:12px;color:var(--grey);cursor:pointer;text-decoration:underline;letter-spacing:1px;margin-bottom:12px;display:block;}
+#admin-panel{display:none;}#admin-panel.open{display:block;}
+.res-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;background:var(--navy3);border:1px solid var(--grey3);border-radius:8px;padding:11px 14px;margin-bottom:8px;}
+.res-row span{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;}
+.res-row select{background:var(--grey3);border:1px solid rgba(255,255,255,.1);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;padding:6px 10px;border-radius:6px;cursor:pointer;outline:none;}
+.save-btn{width:100%;padding:14px;background:var(--navy3);color:var(--gold);border:1px solid var(--gold);border-radius:10px;font-family:'Anton',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;transition:all .18s;text-transform:uppercase;margin-top:8px;}
+.save-btn:hover{background:rgba(245,196,0,.1);}
+
+/* IMAGE GEN */
+.img-wrap{max-width:960px;}
+.img-controls{background:var(--card);border:1px solid rgba(255,255,255,.055);border-radius:16px;padding:24px;margin-bottom:20px;}
+.img-controls h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--grey3);}
+.img-btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.img-gen-btn{padding:12px 24px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Anton',sans-serif;font-size:17px;letter-spacing:1.5px;cursor:pointer;transition:all .18s;text-transform:uppercase;}
+.img-gen-btn:hover{background:var(--gold2);transform:translateY(-1px);}
+.img-dl-btn{padding:12px 24px;background:var(--navy3);color:var(--gold);border:1px solid var(--gold);border-radius:8px;font-family:'Anton',sans-serif;font-size:17px;letter-spacing:1.5px;cursor:pointer;transition:all .18s;text-transform:uppercase;display:none;}
+.img-dl-btn.show{display:inline-block;}
+.img-dl-btn:hover{background:rgba(245,196,0,.1);}
+.img-hint{font-size:13px;color:var(--grey);margin-top:10px;line-height:1.6;}
+#share-card-outer{margin-top:20px;overflow-x:auto;display:none;}
+#share-card-outer.show{display:block;}
+#share-card{width:1200px;background:linear-gradient(155deg,#5ec4ee 0%,#3a9dc8 25%,#2272a8 55%,#164d80 100%);border-radius:18px;overflow:hidden;position:relative;}
+.sc-header{position:relative;z-index:1;padding:22px 34px 14px;display:flex;align-items:center;justify-content:space-between;}
+.sc-title{font-family:'Anton',sans-serif;font-size:42px;letter-spacing:3px;color:#fff;text-shadow:0 3px 10px rgba(0,0,0,.35);text-transform:uppercase;line-height:1;}
+.sc-title em{color:#f5c400;font-style:normal;}
+.sc-sponsors{display:flex;align-items:center;gap:10px;}
+.sc-badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:10px;padding:8px 14px;text-align:center;}
+.sc-badge .b1{font-family:'Anton',sans-serif;font-size:18px;letter-spacing:1px;color:#fff;display:block;}
+.sc-badge .b2{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.65);text-transform:uppercase;display:block;}
+.sc-swfl{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:10px;padding:10px 16px;text-align:center;}
+.sc-swfl .sw1{font-family:'Anton',sans-serif;font-size:26px;letter-spacing:2px;color:#f5c400;display:block;}
+.sc-swfl .sw2{font-family:'Barlow Condensed',sans-serif;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.6);text-transform:uppercase;display:block;}
+.sc-divider{height:1px;background:rgba(255,255,255,.18);margin:0 34px 14px;}
+.sc-tipsters{position:relative;z-index:1;padding:0 24px 12px;}
+.sc-tip-row{display:flex;}
+.sc-tip-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 2px;}
+.sc-avatar{width:66px;height:66px;border-radius:50%;border:3px solid rgba(255,255,255,.3);background:rgba(0,0,0,.2);overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:17px;color:#fff;position:relative;flex-shrink:0;}
+.sc-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.sc-tname{font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.5px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);text-align:center;text-transform:uppercase;line-height:1.1;}
+.sc-torg{font-family:'Barlow Condensed',sans-serif;font-size:9px;color:rgba(255,255,255,.58);letter-spacing:1px;text-transform:uppercase;text-align:center;}
+.sc-tscore{font-family:'Anton',sans-serif;font-size:24px;color:#f5c400;text-shadow:0 2px 6px rgba(0,0,0,.4);line-height:1;}
+.sc-games{position:relative;z-index:1;padding:0 24px 26px;}
+.sc-game-row{display:flex;align-items:center;margin-bottom:8px;}
+.sc-game-label{width:120px;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;color:rgba(255,255,255,.88);text-align:right;padding-right:10px;line-height:1.3;}
+.sc-game-cols{display:flex;flex:1;}
+.sc-game-col{flex:1;display:flex;justify-content:center;align-items:center;}
+.sc-logo{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.93);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;flex-shrink:0;}
+.sc-logo img{width:100%;height:100%;object-fit:contain;padding:3px;}
+.sc-logo-txt{font-family:'Anton',sans-serif;font-size:10px;color:#0a1628;}
+
+/* UTILS */
+.loading{text-align:center;padding:60px 20px;font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--grey);letter-spacing:2px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:var(--navy);font-family:'Anton',sans-serif;font-size:16px;letter-spacing:1.5px;padding:14px 28px;border-radius:10px;transition:transform .3s;z-index:999;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.err{background:var(--red);color:#fff;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.lb-row:nth-child(1){animation-delay:.04s}.lb-row:nth-child(2){animation-delay:.08s}.lb-row:nth-child(3){animation-delay:.12s}.lb-row:nth-child(4){animation-delay:.16s}.lb-row:nth-child(5){animation-delay:.20s}.lb-row:nth-child(6){animation-delay:.24s}.lb-row:nth-child(7){animation-delay:.28s}.lb-row:nth-child(8){animation-delay:.32s}.lb-row:nth-child(9){animation-delay:.36s}.lb-row:nth-child(10){animation-delay:.40s}.lb-row:nth-child(11){animation-delay:.44s}.lb-row:nth-child(12){animation-delay:.48s}
+@media(max-width:600px){.lb-row{grid-template-columns:40px 1fr 68px;}.topbar-logo{font-size:22px;}.tabs{max-width:100%;}.tab{font-size:11px;padding:8px 6px;}}
+</style>
+</head>
+<body>
+
+<!-- FIRST-TIME SETUP BANNER -->
+<div id="setup-banner" style="display:none;">
+  <div class="setup-box">
+    <h2>⚙️ SETUP</h2>
+    <p>Paste your Supabase project details below.<br>You only need to do this once.<br><br>
+      <strong style="color:var(--gold)">Where to find these:</strong><br>
+      supabase.com → your project → Settings → API
+    </p>
+    <div style="margin-bottom:14px;text-align:left;">
+      <label>Project URL</label>
+      <input id="setup-url" type="text" placeholder="https://xxxxxxxxxxxx.supabase.co">
+    </div>
+    <div style="margin-bottom:14px;text-align:left;">
+      <label>Anon / Public API Key</label>
+      <input id="setup-key" type="text" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+    </div>
+    <div style="margin-bottom:14px;text-align:left;">
+      <label>PlayHQ Proxy URL <span style="color:var(--grey);font-size:10px;">(your Render or Cloudflare Worker URL)</span></label>
+      <input id="setup-proxy" type="text" placeholder="https://swfl-proxy.onrender.com">
+    </div>
+    <button class="setup-save" onclick="saveSetup()">Save & Continue</button>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">SWFL</div>
+    <div class="login-sub">Tipping Competition 2026</div>
+    <div id="link-waiting" style="padding:20px 0;">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--grey);letter-spacing:1px;margin-bottom:24px;">
+        Open your personal tipping link to get started.<br>
+        <span style="font-size:13px;opacity:.7">Check your messages for your link.</span>
+      </p>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--grey3);letter-spacing:1px;margin-bottom:20px;">
+        ── or select your name manually ──
+      </div>
+      <div class="tipster-grid" id="tipster-grid"></div>
+    </div>
+    <span class="admin-lnk" onclick="adminLogin()">⚙️ Admin Login</span>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+  <div class="topbar">
+    <div class="topbar-logo">SWFL TIPS</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="user-chip"><span class="name" id="user-label"></span></div>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab(0)">🏆 Ladder</button>
+    <button class="tab" onclick="showTab(1)">📋 Tips</button>
+    <button class="tab" onclick="showTab(2)">✏️ My Tips</button>
+    <button class="tab" id="img-tab" onclick="showTab(3)" style="display:none;">🖼️ Share</button>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="view active" id="v0">
+    <div class="round-bar">
+      <h2>Season Standings</h2>
+      <div class="round-sel">
+        <span style="font-size:13px;color:var(--grey)">After Round</span>
+        <select id="lb-round" onchange="renderLB()"></select>
+      </div>
+    </div>
+    <div class="lb" id="lb"></div>
+  </div>
+
+  <!-- TIPS VIEW -->
+  <div class="view" id="v1">
+    <div class="round-bar">
+      <h2>Round Tips</h2>
+      <div class="round-sel">
+        <span style="font-size:13px;color:var(--grey)">Round</span>
+        <select id="tips-round" onchange="loadRoundTips(parseInt(this.value)).then(renderTips)"></select>
+      </div>
+    </div>
+    <div class="games" id="tips-games"></div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="view" id="v2">
+    <div class="submit-wrap">
+      <div class="form-card">
+        <h3 id="sub-heading">My Tips</h3>
+        <div class="fgroup">
+          <label>Round</label>
+          <select id="sub-round" onchange="loadRoundTips(parseInt(this.value)).then(renderSubmit)"></select>
+        </div>
+        <div class="fgroup" id="admin-tipster-wrap" style="display:none;">
+          <label>Submit for Tipster</label>
+          <select id="admin-tipster" onchange="renderSubmit()"></select>
+        </div>
+        <div id="submit-games"></div>
+        <button class="submit-cta" id="sub-btn" onclick="submitTips()">Lodge Tips</button>
+      </div>
+      <span class="admin-toggle-lnk" id="admin-lnk" style="display:none;" onclick="toggleAdmin()">⚙️ Enter Results</span>
+      <div id="admin-panel" class="form-card">
+        <h3>Match Results</h3>
+        <div class="fgroup">
+          <label>Round</label>
+          <select id="admin-round" onchange="renderAdmin()"></select>
+        </div>
+        <div id="admin-games"></div>
+        <button class="save-btn" onclick="saveResults()">Save Results</button>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--grey3);">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--grey);letter-spacing:1px;margin-bottom:10px;text-transform:uppercase;">FIXTURE MANAGEMENT</p>
+          <button class="save-btn" id="load-fx-btn" onclick="adminLoadFixtures()" style="background:var(--navy2);font-size:15px;margin-top:0;">
+            ↻ Load Fixtures from PlayHQ
+          </button>
+          <p style="font-size:12px;color:var(--grey);margin-top:8px;line-height:1.5;">
+            Fetches all rounds from PlayHQ via your proxy and saves them to the database. Do this once at the start of the season — everyone gets fixtures instantly after that.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHARE IMAGE -->
+  <div class="view" id="v3">
+    <div class="img-wrap">
+      <div class="img-controls">
+        <h3>Generate Round Tips Image</h3>
+        <div class="fgroup">
+          <label>Round</label>
+          <select id="img-round"></select>
+        </div>
+        <p class="img-hint">Generates a shareable image in the SWFL tips style with team logos, tipster scores and picks.</p>
+        <div class="img-btn-row">
+          <button class="img-gen-btn" onclick="generateShareCard()">⚡ Generate Image</button>
+          <button class="img-dl-btn" id="img-dl-btn" onclick="downloadShareCard()">⬇ Download PNG</button>
+        </div>
+      </div>
+      <div id="share-card-outer">
+        <div id="share-card">
+          <div class="sc-header">
+            <div class="sc-title">SWFL ROUND <em id="sc-round-num">?</em> TIPS</div>
+            <div class="sc-sponsors">
+              <div class="sc-badge"><span class="b1">MGIB</span></div>
+              <div class="sc-badge"><span class="b1">SEN SPIRIT</span><span class="b2">1494 Southwest · 621 Bunbury</span></div>
+              <div class="sc-swfl"><span class="sw1">SWFL</span><span class="sw2">South West Football League</span></div>
+            </div>
+          </div>
+          <div class="sc-divider"></div>
+          <div class="sc-tipsters"><div class="sc-tip-row" id="sc-tipsters"></div></div>
+          <div class="sc-divider"></div>
+          <div class="sc-games" id="sc-games"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+// CONFIG  ← tipsters & PINs only here
+// ══════════════════════════════════════════
+const TOTAL_ROUNDS = 18;
+const GRADE_ID     = 'e1f806f3';
+const ADMIN_PIN    = '0000';  // change before sharing!
+
+// Each tipster gets a unique link: yoursite.pages.dev?t=TOKEN
+// Share each person ONLY their own link — don't share the full list!
+const TIPSTERS = [
+  { name:'Jarred',         org:'SEN',         token:'8ec75e07' },
+  { name:'Craney',         org:'SEN',         token:'1a093ef5' },
+  { name:'Macca',          org:'SEN',         token:'30f22176' },
+  { name:'Weaver',         org:'SEN',         token:'145aeb40' },
+  { name:'Charlie',        org:'SEN',         token:'44c4a413' },
+  { name:'Antony',         org:'MGIB',        token:'8c2d8aa1' },
+  { name:'Blair',          org:'Buckinghams', token:'e56a7873' },
+  { name:'Conor',          org:'Ford',        token:'38bfd1d8' },
+  { name:'Dean',           org:'Lomax',       token:'66298c98' },
+  { name:'Ritchie',        org:'Hollow',      token:'a4a20aaa' },
+  { name:'Jaysen',         org:'Mayor',       token:'c75f088b' },
+  { name:'Mystery Tipper', org:'',            token:'e07d088b' },
+];
+
+// ══════════════════════════════════════════
+// SETTINGS — stored in localStorage
+// (Supabase URL/key entered once at setup)
+// ══════════════════════════════════════════
+const cfg = {
+  get url()   { return localStorage.getItem('sb_url')   || 'https://nxwqdzcaziugpqbzwrog.supabase.co'; },
+  get key()   { return localStorage.getItem('sb_key')   || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54d3FkemNheml1Z3BxYnp3cm9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4Mzc1ODgsImV4cCI6MjA5MzQxMzU4OH0.xUfEmUTqiiNqVRl35rnH-jczbKpiPmqic9ipOAdxwVQ'; },
+  get proxy() { return localStorage.getItem('sb_proxy') || 'https://swfl-proxy.onrender.com'; },
+  set url(v)  { localStorage.setItem('sb_url',   v); },
+  set key(v)  { localStorage.setItem('sb_key',   v); },
+  set proxy(v){ localStorage.setItem('sb_proxy', v); },
+  get ready() { return true; },  // always ready — defaults baked in
+};
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let tips         = {};
+let results      = {};
+let fixtureCache = JSON.parse(localStorage.getItem('swfl_fx') || '{}');
+let scores       = {}; // tipster → {total, byRound:{}}
+
+let currentUser  = null;
+let isAdmin      = false;
+let selectedName = null;
+let pinEntry     = '';
+let pickMap      = {};
+
+// ══════════════════════════════════════════
+// SUPABASE REST HELPERS
+// Supabase exposes a PostgREST API — no SDK needed
+// ══════════════════════════════════════════
+function sbHeaders() {
+  return {
+    'Content-Type':  'application/json',
+    'apikey':        cfg.key,
+    'Authorization': `Bearer ${cfg.key}`,
+    'Prefer':        'return=representation',
+  };
+}
+
+async function sbSelect(table, params = '') {
+  const r = await fetch(`${cfg.url}/rest/v1/${table}?${params}`, {
+    headers: sbHeaders()
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function sbUpsert(table, data) {
+  const r = await fetch(`${cfg.url}/rest/v1/${table}`, {
+    method:  'POST',
+    headers: { ...sbHeaders(), 'Prefer': 'resolution=merge-duplicates,return=representation' },
+    body:    JSON.stringify(data),
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+// PlayHQ GraphQL — via proxy (solves CORS)
+async function playhqGql(query, variables = {}) {
+  if (!cfg.proxy) return null;
+  try {
+    const r = await fetch(`${cfg.proxy}/graphql`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, variables }),
+    });
+    return r.json();
+  } catch(e) { console.warn('PlayHQ proxy error', e); return null; }
+}
+
+// ══════════════════════════════════════════
+// FIRST-TIME SETUP
+// ══════════════════════════════════════════
+function checkSetup() { /* credentials baked in — setup not needed */ }
+
+function saveSetup() {
+  const url   = document.getElementById('setup-url').value.trim().replace(/\/$/, '');
+  const key   = document.getElementById('setup-key').value.trim();
+  const proxy = document.getElementById('setup-proxy').value.trim().replace(/\/$/, '');
+  if (!url || !key) { alert('Please enter both the URL and API key.'); return; }
+  cfg.url   = url;
+  cfg.key   = key;
+  cfg.proxy = proxy;
+  document.getElementById('setup-banner').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  toast('✓ Settings saved!');
+  // Try token login now that config is saved
+  checkUrlToken();
+}
+
+// ══════════════════════════════════════════
+// LOAD DATA
+// ══════════════════════════════════════════
+const FIXTURE_Q = `query{discoverGrade(gradeID:"${GRADE_ID}"){rounds{roundNumber fixtures{id venue{name}home{team{id name logo{url}}score}away{team{id name logo{url}}score}status result{winner{id}draw}}}}}`;
+
+async function loadFixtures() {
+  // Step 1: Try loading from Supabase (fast, always available)
+  try {
+    const rows = await sbSelect('fixtures', 'select=round,game_index,home,away,venue,home_logo,away_logo,game_date&order=round,game_index');
+    if (rows && rows.length > 0) {
+      fixtureCache = {};
+      rows.forEach(r => {
+        if (!fixtureCache[r.round]) fixtureCache[r.round] = [];
+        fixtureCache[r.round][r.game_index] = {
+          home:      r.home,
+          away:      r.away,
+          venue:     r.venue || '',
+          homeLogo:  r.home_logo || '',
+          awayLogo:  r.away_logo || '',
+          date:      r.game_date || '',
+        };
+      });
+      // Clean up sparse arrays
+      Object.keys(fixtureCache).forEach(r => {
+        fixtureCache[r] = fixtureCache[r].filter(Boolean);
+      });
+      localStorage.setItem('swfl_fx', JSON.stringify(fixtureCache));
+      console.log('Fixtures loaded from Supabase:', Object.keys(fixtureCache).length, 'rounds');
+      return true;
+    }
+  } catch(e) { console.warn('Supabase fixture load failed', e); }
+
+  // Step 2: Try local cache
+  const cached = localStorage.getItem('swfl_fx');
+  if (cached) {
+    fixtureCache = JSON.parse(cached);
+    if (Object.keys(fixtureCache).length > 0) {
+      console.log('Fixtures loaded from local cache');
+      return true;
+    }
+  }
+
+  // Step 3: Try PlayHQ via proxy (may be slow/sleeping)
+  return await fetchFixturesFromPlayHQ();
+}
+
+async function fetchFixturesFromPlayHQ() {
+  const d = await playhqGql(FIXTURE_Q);
+  if (!d?.data?.discoverGrade) return false;
+  const rounds = d.data.discoverGrade.rounds || [];
+  const newCache = {};
+  rounds.forEach(r => {
+    newCache[r.roundNumber] = (r.fixtures || []).map(f => ({
+      gameId:    f.id,
+      home:      f.home?.team?.name || '?',
+      away:      f.away?.team?.name || '?',
+      homeId:    f.home?.team?.id   || '',
+      awayId:    f.away?.team?.id   || '',
+      homeLogo:  f.home?.team?.logo?.url || '',
+      awayLogo:  f.away?.team?.logo?.url || '',
+      homeScore: f.home?.score ?? null,
+      awayScore: f.away?.score ?? null,
+      venue:     f.venue?.name || '',
+      status:    f.status || '',
+      winnerId:  f.result?.winner?.id || null,
+      draw:      f.result?.draw || false,
+      date:      '',
+    }));
+  });
+  fixtureCache = newCache;
+  localStorage.setItem('swfl_fx', JSON.stringify(fixtureCache));
+  // Save to Supabase so everyone gets them instantly next time
+  await saveFixturesToSupabase(newCache);
+  return true;
+}
+
+async function saveFixturesToSupabase(cache) {
+  try {
+    const rows = [];
+    Object.entries(cache).forEach(([round, games]) => {
+      games.forEach((g, i) => {
+        rows.push({
+          round:      parseInt(round),
+          game_index: i,
+          home:       g.home,
+          away:       g.away,
+          venue:      g.venue || '',
+          home_logo:  g.homeLogo || '',
+          away_logo:  g.awayLogo || '',
+          game_date:  g.date || '',
+        });
+      });
+    });
+    if (rows.length) await sbUpsert('fixtures', rows);
+    console.log('Saved', rows.length, 'fixture rows to Supabase');
+    toast('✓ Fixtures saved to database!', false, 3000);
+  } catch(e) { console.warn('saveFixturesToSupabase', e); }
+}
+
+async function loadResults() {
+  try {
+    const rows = await sbSelect('results', 'select=round,game_index,winner&order=round,game_index');
+    results = {};
+    rows.forEach(r => {
+      if (!results[r.round]) results[r.round] = {};
+      results[r.round][r.game_index] = r.winner;
+    });
+    // Also auto-load winners from PlayHQ fixture data
+    Object.entries(fixtureCache).forEach(([rn, games]) => {
+      games.forEach((g, i) => {
+        if (results[rn]?.[i]) return; // already set manually
+        if (g.draw) { if(!results[rn]) results[rn]={}; results[rn][i]='Draw'; }
+        else if (g.winnerId) {
+          if(!results[rn]) results[rn]={};
+          results[rn][i] = g.winnerId === g.homeId ? g.home : g.away;
+        }
+      });
+    });
+  } catch(e) { console.warn('loadResults', e); }
+}
+
+async function loadRoundTips(round) {
+  try {
+    const rows = await sbSelect('tips', `select=tipster,game_index,pick&round=eq.${round}`);
+    tips[round] = {};
+    rows.forEach(r => {
+      if (!tips[round][r.tipster]) tips[round][r.tipster] = {};
+      tips[round][r.tipster][r.game_index] = r.pick;
+    });
+  } catch(e) { console.warn('loadRoundTips', e); }
+  return tips[round] || {};
+}
+
+async function loadAllData() {
+  toast('↻ Loading data…', false, 4000);
+  const [fx] = await Promise.all([loadFixtures(), loadResults()]);
+  return fx;
+}
+
+function getGames(round) {
+  return fixtureCache[round] || [];
+}
+
+// ══════════════════════════════════════════
+// SCORING
+// ══════════════════════════════════════════
+function roundScore(tipster, round) {
+  const r = results[round] || {};
+  const t = tips[round]?.[tipster];
+  if (!t || !Object.keys(r).length) return null;
+  const games = getGames(round);
+  let score = 0, possible = 0;
+  games.forEach((_, i) => {
+    if (r[i] === undefined) return;
+    possible++;
+    if (t[i] && t[i] === r[i]) score++;
+  });
+  return possible ? score : null;
+}
+
+function totalScore(tipster, upTo) {
+  let total = 0;
+  for (let r = 1; r <= upTo; r++) {
+    const s = roundScore(tipster, r);
+    if (s !== null) total += s;
+  }
+  return total;
+}
+
+function latestScoredRound() {
+  for (let r = TOTAL_ROUNDS; r >= 1; r--) if (Object.keys(results[r] || {}).length) return r;
+  return 1;
+}
+
+// ══════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════
+function buildLoginGrid() {
+  // Manual fallback — clicking name goes straight in (no PIN since link is the auth)
+  document.getElementById('tipster-grid').innerHTML = TIPSTERS.map(t => `
+    <button class="tipster-btn" onclick="enterApp('${t.name}', false)">
+      ${t.name}${t.org ? `<span class="tipster-org">${t.org}</span>` : ''}
+    </button>`).join('');
+}
+
+function adminLogin() {
+  const p = prompt('Admin PIN:');
+  if (p === ADMIN_PIN) enterApp('Admin', true);
+  else if (p !== null) alert('Wrong PIN');
+}
+
+// Check URL token on load — auto-login if valid token found
+function checkUrlToken() {
+  const params = new URLSearchParams(window.location.search);
+  const token  = params.get('t');
+  if (!token) return false;
+  const tipster = TIPSTERS.find(t => t.token === token);
+  if (tipster) {
+    enterApp(tipster.name, false);
+    return true;
+  }
+  // Bad token — show error on login screen
+  document.getElementById('link-waiting').insertAdjacentHTML('afterbegin',
+    `<div style="background:rgba(255,69,69,.15);border:1px solid var(--red);border-radius:8px;padding:12px;margin-bottom:16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--red);letter-spacing:1px;">
+      Invalid link — please use your personal link or select your name below.
+    </div>`
+  );
+  return false;
+}
+
+async function enterApp(name, admin) {
+  currentUser = name; isAdmin = admin;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('user-label').textContent = name;
+  document.getElementById('sub-heading').textContent = admin ? 'Submit Tips' : `My Tips — ${name}`;
+  if (admin) {
+    document.getElementById('admin-lnk').style.display = 'block';
+    document.getElementById('admin-tipster-wrap').style.display = 'block';
+    document.getElementById('admin-tipster').innerHTML = TIPSTERS.map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+    document.getElementById('img-tab').style.display = '';
+    document.querySelectorAll('.tab')[2].textContent = '✏️ Tips';
+  }
+  populateSelects();
+  const ok = await loadAllData();
+  const latest = latestScoredRound();
+  await loadRoundTips(latest);
+  renderLB(); renderSubmit();
+  if (ok) toast('✓ Live data loaded!', false, 2000);
+  else toast('⚠ Using cached fixtures — check proxy', true, 4000);
+}
+
+function logout() {
+  currentUser = null; isAdmin = false; selectedName = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-lnk').style.display = 'none';
+  document.getElementById('admin-tipster-wrap').style.display = 'none';
+  document.getElementById('img-tab').style.display = 'none';
+  // Strip token from URL so they see the login screen properly
+  window.history.replaceState({}, '', window.location.pathname);
+}
+
+// ══════════════════════════════════════════
+// POPULATE SELECTS
+// ══════════════════════════════════════════
+function populateSelects() {
+  const latest = latestScoredRound();
+  const opts = Array.from({length: TOTAL_ROUNDS}, (_, i) => i + 1)
+    .map(r => `<option value="${r}"${r === latest ? ' selected' : ''}>Round ${r}</option>`).join('');
+  ['lb-round','tips-round','sub-round','admin-round','img-round'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.innerHTML = opts;
+  });
+}
+
+// ══════════════════════════════════════════
+// LEADERBOARD
+// ══════════════════════════════════════════
+function renderLB() {
+  const round = parseInt(document.getElementById('lb-round').value);
+  const rows = TIPSTERS.map(t => ({
+    ...t,
+    total: totalScore(t.name, round),
+    rnd:   roundScore(t.name, round),
+  })).sort((a, b) => b.total - a.total || (b.rnd ?? -1) - (a.rnd ?? -1));
+
+  document.getElementById('lb').innerHTML = rows.map((t, i) => {
+    const pos = i + 1, pc = pos <= 3 ? `p${pos}` : '';
+    const medal = pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : pos;
+    return `<div class="lb-row ${pc}">
+      <div class="lb-rank">${medal}</div>
+      <div><div class="lb-name">${t.name}${t.org ? `<span class="lb-tag">${t.org}</span>` : ''}</div></div>
+      <div class="lb-col"><div class="lbl">Rnd ${round}</div><div class="val">${t.rnd ?? '—'}</div></div>
+      <div class="lb-col total"><div class="lbl">Total</div><div class="val">${t.total}</div></div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// TIPS VIEW
+// ══════════════════════════════════════════
+function renderTips() {
+  const round = parseInt(document.getElementById('tips-round').value);
+  const games = getGames(round);
+  const rr = results[round] || {};
+  const rt = tips[round] || {};
+  if (!games.length) {
+    document.getElementById('tips-games').innerHTML = `<div class="loading">No fixtures for Round ${round}</div>`;
+    return;
+  }
+  document.getElementById('tips-games').innerHTML = games.map((g, gi) => {
+    const winner = rr[gi]; const scored = winner !== undefined;
+    const chips = TIPSTERS.map(t => {
+      const pick = rt[t.name]?.[gi];
+      const cls  = scored ? (pick === winner ? 'correct' : 'wrong') : '';
+      return `<span class="pick-chip ${cls}"><span class="pname">${t.name.split(' ')[0]}</span><span class="pteam">→ ${pick || '—'}</span></span>`;
+    }).join('');
+    const rb = scored ? `<span class="result-badge">✓ ${winner === 'Draw' ? 'Draw' : winner + ' won'}</span>` : `<span>TBD</span>`;
+    const hL = g.homeLogo ? `<img src="${g.homeLogo}" onerror="this.style.display='none'">` : g.home.slice(0,3).toUpperCase();
+    const aL = g.awayLogo ? `<img src="${g.awayLogo}" onerror="this.style.display='none'">` : g.away.slice(0,3).toUpperCase();
+    return `<div class="game-card">
+      <div class="game-hdr"><span>Rnd ${round} · Game ${gi+1}${g.venue ? ' · ' + g.venue : ''}</span>${rb}</div>
+      <div class="matchup">
+        <div class="team-side"><div class="team-logo-wrap">${hL}</div><div class="team-label">${g.home}${g.homeScore != null ? `<small>${g.homeScore}</small>` : ''}</div></div>
+        <div class="vs-badge">VS</div>
+        <div class="team-side right"><div class="team-label">${g.away}${g.awayScore != null ? `<small>${g.awayScore}</small>` : ''}</div><div class="team-logo-wrap">${aL}</div></div>
+      </div>
+      <div class="picks-row">${chips}</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// SUBMIT TIPS
+// ══════════════════════════════════════════
+function isTipsLocked(round) {
+  if (isAdmin) return false; // admin can always edit
+  // Lock once any results are entered for this round
+  if (Object.keys(results[round] || {}).length > 0) return true;
+  // Lock from 7am Friday WST (UTC+8) = Thursday 23:00 UTC
+  const now = new Date();
+  const wst = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+  const day = wst.getUTCDay();   // 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat
+  const hr  = wst.getUTCHours();
+  if (day === 5 && hr >= 7)  return true; // Fri 7am+
+  if (day === 6)             return true; // All Sat
+  if (day === 0)             return true; // All Sun
+  return false;
+}
+
+function renderSubmit() {
+  const round   = parseInt(document.getElementById('sub-round').value);
+  const tipster = isAdmin ? (document.getElementById('admin-tipster')?.value || currentUser) : currentUser;
+  const games   = getGames(round);
+  const existing = tips[round]?.[tipster] || {};
+  const locked  = isTipsLocked(round);
+  pickMap = {};
+  Object.keys(existing).forEach(k => { pickMap[parseInt(k)] = existing[k]; });
+
+  let html = '';
+
+  if (locked) {
+    const hasResults = Object.keys(results[round] || {}).length > 0;
+    html += `<div style="background:rgba(255,69,69,.1);border:1px solid rgba(255,69,69,.3);border-radius:10px;padding:14px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--red);margin-bottom:16px;letter-spacing:1px;">
+      🔒 ${hasResults ? 'Results are in — tips closed.' : 'Tips locked — deadline was 7am Friday WST.'}
+    </div>`;
+  } else if (Object.keys(existing).length > 0) {
+    html += `<div class="already-submitted">✓ Tips lodged for Round ${round}. You can update them below.</div>`;
+  }
+
+  html += games.map((g, i) => {
+    const ep = existing[i];
+    const hL = g.homeLogo ? `<img src="${g.homeLogo}" onerror="this.style.display='none'">` : g.home.slice(0, 3);
+    const aL = g.awayLogo ? `<img src="${g.awayLogo}" onerror="this.style.display='none'">` : g.away.slice(0, 3);
+    return `<div class="gm-pick${ep ? ' locked' : ''}" id="gmp-${i}">
+      <button class="pick-t home-btn${ep === g.home ? ' selected' : ''}" id="ph-${i}" onclick="pick(${i},'${g.home}','${g.away}')">
+        <span class="tm-logo">${hL}</span>${g.home}
+      </button>
+      <div class="pick-vs-lbl">VS</div>
+      <button class="pick-t away-btn${ep === g.away ? ' selected' : ''}" id="pa-${i}" onclick="pick(${i},'${g.away}','${g.home}')">
+        ${g.away}<span class="tm-logo">${aL}</span>
+      </button>
+    </div>`;
+  }).join('');
+
+  // When locked, show picks as read-only (no buttons)
+  if (locked) {
+    html += games.map((g, i) => {
+      const pick = existing[i];
+      const winner = (results[round] || {})[i];
+      const hasResult = winner !== undefined;
+      const cls = hasResult ? (pick === winner ? 'correct' : pick ? 'wrong' : '') : '';
+      const hL = g.homeLogo ? `<img src="${g.homeLogo}" onerror="this.style.display='none'">` : g.home.slice(0,3);
+      const aL = g.awayLogo ? `<img src="${g.awayLogo}" onerror="this.style.display='none'">` : g.away.slice(0,3);
+      const pickLabel = pick
+        ? `<span style="font-family:'Anton',sans-serif;font-size:16px;color:${cls==='correct'?'var(--green)':cls==='wrong'?'var(--red)':'var(--gold)'}">→ ${pick}</span>`
+        : `<span style="color:var(--grey);font-family:'Barlow Condensed',sans-serif;font-size:14px;">No tip</span>`;
+      return `<div class="gm-pick locked" style="opacity:.85;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="tm-logo">${hL}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;">${g.home}</span>
+        </div>
+        ${pickLabel}
+        <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;">${g.away}</span>
+          <span class="tm-logo">${aL}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('submit-games').innerHTML = html;
+  const btn = document.getElementById('sub-btn');
+  btn.textContent = locked ? '🔒 Tips Locked' : (Object.keys(existing).length ? 'Update Tips' : 'Lodge Tips');
+  btn.disabled = locked;
+  btn.style.opacity = locked ? '.4' : '1';
+}
+
+function pick(gi, team, other) {
+  pickMap[gi] = team;
+  const round = parseInt(document.getElementById('sub-round').value);
+  const g = getGames(round)[gi];
+  document.getElementById(`gmp-${gi}`).className = 'gm-pick locked';
+  document.getElementById(`ph-${gi}`).classList.toggle('selected', team === g.home);
+  document.getElementById(`pa-${gi}`).classList.toggle('selected', team === g.away);
+}
+
+async function submitTips() {
+  const round   = parseInt(document.getElementById('sub-round').value);
+  const tipster = isAdmin ? (document.getElementById('admin-tipster')?.value || currentUser) : currentUser;
+  const games   = getGames(round);
+  const missing = games.filter((_, i) => !pickMap[i]).length;
+  if (missing > 0 && !confirm(`${missing} game(s) not picked. Submit anyway?`)) return;
+
+  const btn = document.getElementById('sub-btn');
+  btn.textContent = 'Submitting…'; btn.disabled = true;
+
+  try {
+    // Build array of rows for upsert
+    const rows = games
+      .map((_, i) => pickMap[i] ? { round, tipster, game_index: i, pick: pickMap[i] } : null)
+      .filter(Boolean);
+
+    await sbUpsert('tips', rows);
+
+    // Update local cache
+    if (!tips[round]) tips[round] = {};
+    tips[round][tipster] = {};
+    rows.forEach(r => tips[round][tipster][r.game_index] = r.pick);
+
+    toast('✓ Tips submitted! Good luck!');
+    renderLB();
+    renderSubmit();
+  } catch(e) {
+    console.error(e);
+    toast('⚠ Failed to save — check Supabase config', true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Update Tips';
+  }
+}
+
+// ══════════════════════════════════════════
+// ADMIN — RESULTS
+// ══════════════════════════════════════════
+function renderAdmin() {
+  const round = parseInt(document.getElementById('admin-round').value);
+  const games = getGames(round);
+  const rr    = results[round] || {};
+  document.getElementById('admin-games').innerHTML = games.map((g, i) => `
+    <div class="res-row">
+      <span>${g.home} vs ${g.away}</span>
+      <select id="res-${i}">
+        <option value="">— TBD —</option>
+        <option value="${g.home}"${rr[i] === g.home ? ' selected' : ''}>${g.home}</option>
+        <option value="${g.away}"${rr[i] === g.away ? ' selected' : ''}>${g.away}</option>
+        <option value="Draw"${rr[i] === 'Draw'  ? ' selected' : ''}>Draw</option>
+      </select>
+    </div>`).join('');
+}
+
+async function saveResults() {
+  const round = parseInt(document.getElementById('admin-round').value);
+  const games = getGames(round);
+  const rows  = games
+    .map((_, i) => { const el = document.getElementById(`res-${i}`); return el?.value ? { round, game_index: i, winner: el.value } : null; })
+    .filter(Boolean);
+
+  try {
+    await sbUpsert('results', rows);
+    if (!results[round]) results[round] = {};
+    rows.forEach(r => results[round][r.game_index] = r.winner);
+    toast('✓ Results saved!');
+    renderLB(); renderTips();
+  } catch(e) {
+    console.error(e);
+    toast('⚠ Failed to save results', true);
+  }
+}
+
+function toggleAdmin() {
+  const p = document.getElementById('admin-panel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) renderAdmin();
+}
+
+// ══════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════
+async function showTab(idx) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.view').forEach((v, i) => v.classList.toggle('active', i === idx));
+  if (idx === 0) renderLB();
+  if (idx === 1) { const r = parseInt(document.getElementById('tips-round').value); await loadRoundTips(r); renderTips(); }
+  if (idx === 2) { const r = parseInt(document.getElementById('sub-round').value);  await loadRoundTips(r); renderSubmit(); }
+  if (idx === 3) generateShareCard();
+}
+
+// ══════════════════════════════════════════
+// SHARE IMAGE GENERATOR
+// ══════════════════════════════════════════
+function generateShareCard() {
+  const round      = parseInt(document.getElementById('img-round').value);
+  const games      = getGames(round);
+  const roundTips  = tips[round] || {};
+  const roundRes   = results[round] || {};
+  document.getElementById('sc-round-num').textContent = round;
+
+  document.getElementById('sc-tipsters').innerHTML = TIPSTERS.map(t => {
+    const score    = totalScore(t.name, round);
+    const initials = t.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    return `<div class="sc-tip-col">
+      <div class="sc-avatar">
+        <img src="${t.name.toLowerCase().replace(/\s/g,'_')}.jpg" onerror="this.style.display='none'">
+        <span style="position:relative;z-index:1;">${initials}</span>
+      </div>
+      <div class="sc-tname">${t.name}</div>
+      ${t.org ? `<div class="sc-torg">${t.org}</div>` : ''}
+      <div class="sc-tscore">${score}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('sc-games').innerHTML = !games.length
+    ? '<p style="color:rgba(255,255,255,.6);font-family:Barlow Condensed,sans-serif;font-size:16px;padding:10px 0;">No fixtures loaded.</p>'
+    : games.map((g, gi) => {
+        const winner = roundRes[gi]; const hasResult = winner !== undefined;
+        const cols = TIPSTERS.map(t => {
+          const pick = roundTips[t.name]?.[gi];
+          if (!pick) return `<div class="sc-game-col"><div style="width:54px;height:54px;"></div></div>`;
+          const isHome = pick === g.home;
+          const logoUrl = isHome ? (g.homeLogo || '') : (g.awayLogo || '');
+          const abbr    = pick.slice(0, 3).toUpperCase();
+          const isLoser  = hasResult && pick !== winner;
+          const isWinner = hasResult && pick === winner;
+          const xSvg = isLoser ? `<svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 54 54"><line x1="7" y1="7" x2="47" y2="47" stroke="#cc1100" stroke-width="6" stroke-linecap="round"/><line x1="47" y1="7" x2="7" y2="47" stroke="#cc1100" stroke-width="6" stroke-linecap="round"/></svg>` : '';
+          const glow = isWinner ? 'box-shadow:0 0 0 3px #f5c400;' : '';
+          const logoImg = logoUrl ? `<img src="${logoUrl}" onerror="this.style.display='none';this.nextSibling.style.display='block'"><span class="sc-logo-txt" style="display:none">${abbr}</span>` : `<span class="sc-logo-txt">${abbr}</span>`;
+          return `<div class="sc-game-col"><div class="sc-logo" style="${glow}position:relative;">${logoImg}${xSvg}</div></div>`;
+        }).join('');
+        return `<div class="sc-game-row"><div class="sc-game-label">${g.home}<br>vs ${g.away}</div><div class="sc-game-cols">${cols}</div></div>`;
+      }).join('');
+
+  document.getElementById('share-card-outer').classList.add('show');
+  document.getElementById('img-dl-btn').classList.add('show');
+}
+
+async function downloadShareCard() {
+  const btn = document.getElementById('img-dl-btn');
+  btn.textContent = '⟳ Rendering…';
+  try {
+    await new Promise(r => setTimeout(r, 600));
+    const canvas = await html2canvas(document.getElementById('share-card'), {
+      scale: 2, useCORS: true, allowTaint: true, backgroundColor: null, logging: false,
+    });
+    const a = document.createElement('a');
+    a.download = `SWFL_Round_${document.getElementById('img-round').value}_Tips.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    btn.textContent = '✓ Downloaded!';
+    setTimeout(() => btn.textContent = '⬇ Download PNG', 2500);
+  } catch(e) {
+    btn.textContent = '⚠ Try again';
+    setTimeout(() => btn.textContent = '⬇ Download PNG', 3000);
+  }
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+let tt;
+function toast(msg, err = false, dur = 3000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'toast' + (err ? ' err' : '');
+  el.classList.add('show'); clearTimeout(tt);
+  tt = setTimeout(() => el.classList.remove('show'), dur);
+}
+
+// ══════════════════════════════════════════
+// ADMIN FIXTURE LOADER
+// ══════════════════════════════════════════
+async function adminLoadFixtures() {
+  const btn = document.getElementById('load-fx-btn');
+  btn.textContent = '↻ Waking up proxy…';
+  btn.disabled = true;
+  toast('Connecting to PlayHQ… this may take 30 seconds if proxy is asleep.', false, 30000);
+  const ok = await fetchFixturesFromPlayHQ();
+  btn.disabled = false;
+  if (ok) {
+    btn.textContent = '✓ Fixtures loaded!';
+    toast('✓ All fixtures loaded and saved to database!', false, 4000);
+    populateSelects();
+    renderAdmin();
+    renderLB();
+    setTimeout(() => btn.textContent = '↻ Load Fixtures from PlayHQ', 4000);
+  } else {
+    btn.textContent = '⚠ Failed — try again';
+    toast('Could not reach PlayHQ proxy. Check proxy URL in setup.', true, 5000);
+    setTimeout(() => btn.textContent = '↻ Load Fixtures from PlayHQ', 4000);
+  }
+}
+
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+buildLoginGrid();
+checkSetup();
+// Auto-login if URL contains a tipster token
+if (cfg.ready) checkUrlToken();
+</script>
+</body>
+</html>
