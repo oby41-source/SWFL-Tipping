@@ -375,7 +375,7 @@ const cfg = {
   get url()   { return localStorage.getItem('sb_url')   || 'https://nxwqdzcaziugpqbzwrog.supabase.co'; },
   get key()   { return localStorage.getItem('sb_key')   || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54d3FkemNheml1Z3BxYnp3cm9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4Mzc1ODgsImV4cCI6MjA5MzQxMzU4OH0.xUfEmUTqiiNqVRl35rnH-jczbKpiPmqic9ipOAdxwVQ'; },
   // Proxy is now built into the same site via _worker.js — no external URL needed
-  get proxy() { return window.location.origin; },
+  get proxy() { return 'https://hidden-base-b010swfl-proxy.jarredob.workers.dev'; },
   set url(v)  { localStorage.setItem('sb_url',   v); },
   set key(v)  { localStorage.setItem('sb_key',   v); },
   set proxy(v){ /* no-op — proxy is built in */ },
