@@ -191,7 +191,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
     <h2>⚙️ SETUP</h2>
     <p>Paste your Supabase project details below.<br>You only need to do this once.<br><br>
       <strong style="color:var(--gold)">Where to find these:</strong><br>
-      supabase.com → your project → Settings → API
+      supabase.com → your project → Settings → API<br><br>
+      <span style="font-size:12px;opacity:.7">The PlayHQ proxy is built into this site — no separate URL needed.</span>
     </p>
     <div style="margin-bottom:14px;text-align:left;">
       <label>Project URL</label>
@@ -201,10 +202,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;back
       <label>Anon / Public API Key</label>
       <input id="setup-key" type="text" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
     </div>
-    <div style="margin-bottom:14px;text-align:left;">
-      <label>PlayHQ Proxy URL <span style="color:var(--grey);font-size:10px;">(your Render or Cloudflare Worker URL)</span></label>
-      <input id="setup-proxy" type="text" placeholder="https://swfl-proxy.onrender.com">
-    </div>
+
     <button class="setup-save" onclick="saveSetup()">Save & Continue</button>
   </div>
 </div>
@@ -376,10 +374,11 @@ const TIPSTERS = [
 const cfg = {
   get url()   { return localStorage.getItem('sb_url')   || 'https://nxwqdzcaziugpqbzwrog.supabase.co'; },
   get key()   { return localStorage.getItem('sb_key')   || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54d3FkemNheml1Z3BxYnp3cm9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4Mzc1ODgsImV4cCI6MjA5MzQxMzU4OH0.xUfEmUTqiiNqVRl35rnH-jczbKpiPmqic9ipOAdxwVQ'; },
-  get proxy() { return localStorage.getItem('sb_proxy') || 'https://swfl-proxy.onrender.com'; },
+  // Proxy is now built into the same site via _worker.js — no external URL needed
+  get proxy() { return window.location.origin; },
   set url(v)  { localStorage.setItem('sb_url',   v); },
   set key(v)  { localStorage.setItem('sb_key',   v); },
-  set proxy(v){ localStorage.setItem('sb_proxy', v); },
+  set proxy(v){ /* no-op — proxy is built in */ },
   get ready() { return true; },  // always ready — defaults baked in
 };
 
